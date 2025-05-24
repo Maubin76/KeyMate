@@ -1,5 +1,30 @@
 import customtkinter as ctk
 from storage import get_password, add_password
+from config import MASTER_PASSWORD
+
+
+def authenticate():
+    auth_window = ctk.CTk()
+    auth_window.title("KeyMate - Authentification")
+    auth_window.geometry(setup_window(auth_window))
+    
+    ctk.CTkLabel(auth_window, text="Entrez le Master Password:").pack(pady=10)
+    password_entry = ctk.CTkEntry(auth_window, show="*")
+    password_entry.pack(pady=5)
+    
+    result_label = ctk.CTkLabel(auth_window, text="")
+    result_label.pack(pady=5)
+    
+    def verify():
+        entered = password_entry.get()
+        if entered == MASTER_PASSWORD:
+            auth_window.destroy()
+            launch_ui()  # Lancement de l'interface principale
+        else:
+            result_label.configure(text="Mot de passe incorrect", text_color="red")
+    
+    ctk.CTkButton(auth_window, text="Valider", command=verify).pack(pady=5)
+    auth_window.mainloop()
 
 def launch_ui():
     ctk.set_appearance_mode("System")  # Modes: "System" (auto), "Dark", "Light"
@@ -7,19 +32,9 @@ def launch_ui():
 
     root = ctk.CTk()
     root.title("KeyMate")
-    window_width, window_height = 250, 300
-    # Dimensions de l'écran
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
-    
-    # Hauteur de la barre des tâches (approximatif)
-    taskbar_height = 80
-    
-    x = -8  # Collé à gauche
-    y = screen_height - window_height - taskbar_height  # Collé en bas en comptant la barre
     
     # Positionnement de la fenêtre
-    root.geometry(f"{window_width}x{window_height}+{x}+{y}")
+    root.geometry(setup_window(root))
 
     # Entrées
     site_entry = ctk.CTkEntry(root, placeholder_text="Site")
@@ -61,5 +76,16 @@ def launch_ui():
 
     root.mainloop()
 
-if __name__ == "__main__":
-    launch_ui()
+def setup_window(root: ctk) -> str:
+    window_width, window_height = 250, 300
+
+    # Dimensions de l'écran
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    
+    # Hauteur de la barre des tâches (approximatif)
+    taskbar_height = 80
+    
+    x = -8  # Collé à gauche
+    y = screen_height - window_height - taskbar_height  # Collé en bas en comptant la barre
+    return f"{window_width}x{window_height}+{x}+{y}"

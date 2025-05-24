@@ -1,4 +1,4 @@
-from ui import launch_ui
+from ui import authenticate
 
 if __name__ == "__main__":
-    launch_ui()
+    authenticate()
