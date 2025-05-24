@@ -5,25 +5,36 @@ import os
 
 def load_passwords():
     if not os.path.exists(ENC_FILE):
-        return {}
+        return []
     with open(ENC_FILE, "rb") as f:
         encrypted_data = f.read()
     if not encrypted_data:
-        return {}
+        return []
     decrypted_data = decrypt(encrypted_data)
+    print(f"Decrypted data: {decrypted_data}")  # Debugging line
     return json.loads(decrypted_data)
 
-def save_passwords(passwords):
-    data = json.dumps(passwords).encode()
+def save_passwords(passwords_list):
+    data = json.dumps(passwords_list, indent=4).encode()
     encrypted_data = encrypt(data)
     with open(ENC_FILE, "wb") as f:
         f.write(encrypted_data)
 
-def add_password(name, password):
+def add_password(site, id_value, password_value):
     passwords = load_passwords()
-    passwords[name] = password
+    # Vérifier si le site existe déjà et remplacer si besoin
+    for entry in passwords:
+        if entry["site"] == site:
+            entry["id"] = id_value
+            entry["password"] = password_value
+            break
+    else:
+        passwords.append({"site": site, "id": id_value, "password": password_value})
     save_passwords(passwords)
 
-def get_password(name):
+def get_password(site):
     passwords = load_passwords()
-    return passwords.get(name, None)
+    for entry in passwords:
+        if entry["site"] == site:
+            return entry  # Retourne l'entrée complète
+    return None
