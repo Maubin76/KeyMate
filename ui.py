@@ -15,15 +15,20 @@ def authenticate():
     result_label = ctk.CTkLabel(auth_window, text="")
     result_label.pack(pady=5)
     
-    def verify():
-        entered = password_entry.get()
+    def verify(entered=None):
+        if entered is None:
+            entered = password_entry.get()
         if entered == MASTER_PASSWORD:
             auth_window.destroy()
             launch_ui()  # Lancement de l'interface principale
         else:
             result_label.configure(text="Mot de passe incorrect", text_color="red")
     
+    def on_enter(event):
+        verify(event.widget.get())
+    
     ctk.CTkButton(auth_window, text="Valider", command=verify).pack(pady=5)
+    password_entry.bind("<Return>", command=on_enter)
     auth_window.mainloop()
 
 def launch_ui():
