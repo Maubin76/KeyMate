@@ -11,7 +11,6 @@ def load_passwords():
     if not encrypted_data:
         return []
     decrypted_data = decrypt(encrypted_data)
-    print(f"Decrypted data: {decrypted_data}")  # Debugging line
     return json.loads(decrypted_data)
 
 def save_passwords(passwords_list):
