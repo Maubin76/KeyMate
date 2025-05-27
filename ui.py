@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from storage import get_password, add_password
 from config import MASTER_PASSWORD
+from crypto import encrypt, is_password_correct
 
 
 def authenticate():
@@ -18,7 +19,7 @@ def authenticate():
     def verify(entered=None):
         if entered is None:
             entered = password_entry.get()
-        if entered == MASTER_PASSWORD:
+        if is_password_correct(entered):
             auth_window.destroy()
             launch_ui()  # Lancement de l'interface principale
         else:
