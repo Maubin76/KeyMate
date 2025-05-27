@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from storage import get_password, add_password
 from config import MASTER_PASSWORD
-from crypto import encrypt, is_password_correct
+from crypto import is_password_correct
 
 
 def authenticate():
