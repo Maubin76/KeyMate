@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from storage import get_password, add_password
+from storage import get_password, add_password, get_all_passwords
 from config import MASTER_PASSWORD
 from crypto import is_password_correct
 
@@ -79,6 +79,7 @@ def launch_ui():
 
     ctk.CTkButton(root, text="Récupérer", command=on_get).pack(pady=5)
     ctk.CTkButton(root, text="Ajouter/Mettre à jour", command=on_add).pack(pady=5)
+    ctk.CTkButton(root, text="Afficher tous", command=on_show_all).pack(pady=5)
 
     root.mainloop()
 
@@ -95,3 +96,39 @@ def setup_window(root: ctk) -> str:
     x = -8  # Collé à gauche
     y = screen_height - window_height - taskbar_height  # Collé en bas en comptant la barre
     return f"{window_width}x{window_height}+{x}+{y}"
+
+def on_show_all():
+    all_passwords = get_all_passwords()
+
+    # Créer une nouvelle fenêtre
+    list_window = ctk.CTkToplevel()
+    list_window.title("Tous les mots de passe")
+    list_window.geometry("600x400")
+
+    ctk.CTkLabel(list_window, text="Liste des mots de passe enregistrés", font=ctk.CTkFont(size=16, weight="bold")).pack(pady=10)
+
+    # Cadre pour le tableau
+    table_frame = ctk.CTkFrame(list_window)
+    table_frame.pack(fill="both", expand=True, padx=10, pady=10)
+
+    # En-têtes
+    headers = ["Site", "Identifiant", "Mot de passe"]
+    for i, header in enumerate(headers):
+        header_label = ctk.CTkLabel(table_frame, text=header, font=ctk.CTkFont(weight="bold"))
+        header_label.grid(row=0, column=i, padx=10, pady=5, sticky="w")
+
+    # Lignes du tableau
+    if not all_passwords:
+        empty_label = ctk.CTkLabel(table_frame, text="Aucun mot de passe enregistré.")
+        empty_label.grid(row=1, column=0, columnspan=3, pady=10)
+    else:
+        for row_index, entry in enumerate(all_passwords, start=1):
+            site_label = ctk.CTkLabel(table_frame, text=entry["site"])
+            id_label = ctk.CTkLabel(table_frame, text=entry["id"])
+            pwd_label = ctk.CTkLabel(table_frame, text=entry["password"])
+
+            site_label.grid(row=row_index, column=0, padx=10, pady=3, sticky="w")
+            id_label.grid(row=row_index, column=1, padx=10, pady=3, sticky="w")
+            pwd_label.grid(row=row_index, column=2, padx=10, pady=3, sticky="w")
+    # Bouton de fermeture
+    close_button = ctk.CTkButton(list_window, text="Fermer", command=list_window.destroy)

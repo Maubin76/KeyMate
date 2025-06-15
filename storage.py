@@ -37,3 +37,7 @@ def get_password(site):
         if entry["site"] == site:
             return entry  # Retourne l'entrée complète
     return None
+
+def get_all_passwords():
+    return load_passwords()
+
