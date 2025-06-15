@@ -41,3 +41,16 @@ def get_password(site):
 def get_all_passwords():
     return load_passwords()
 
+def delete_password(site):
+    passwords = load_passwords()
+    passwords = [entry for entry in passwords if entry["site"] != site]
+    save_passwords(passwords)
+
+def update_password(site, new_id, new_password):
+    passwords = load_passwords()
+    for entry in passwords:
+        if entry["site"] == site:
+            entry["id"] = new_id
+            entry["password"] = new_password
+            break
+    save_passwords(passwords)
