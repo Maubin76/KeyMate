@@ -4,6 +4,7 @@ from crypto import encrypt, decrypt
 import os
 
 def load_passwords():
+    """Load passwords from the encrypted file."""
     if not os.path.exists(ENC_FILE):
         return []
     with open(ENC_FILE, "rb") as f:
@@ -14,14 +15,16 @@ def load_passwords():
     return json.loads(decrypted_data)
 
 def save_passwords(passwords_list):
+    """Save passwords to the encrypted file."""
     data = json.dumps(passwords_list, indent=4).encode()
     encrypted_data = encrypt(data)
     with open(ENC_FILE, "wb") as f:
         f.write(encrypted_data)
 
 def add_password(site, id_value, password_value):
+    """Add a new password entry."""
     passwords = load_passwords()
-    # Vérifier si le site existe déjà et remplacer si besoin
+    # Check if the site already exists; if so, update it
     for entry in passwords:
         if entry["site"] == site:
             entry["id"] = id_value
@@ -32,21 +35,25 @@ def add_password(site, id_value, password_value):
     save_passwords(passwords)
 
 def get_password(site):
+    """Retrieve a password entry by site."""
     passwords = load_passwords()
     for entry in passwords:
         if entry["site"] == site:
-            return entry  # Retourne l'entrée complète
+            return entry
     return None
 
 def get_all_passwords():
+    """Retrieve all password entries."""
     return load_passwords()
 
 def delete_password(site):
+    """Delete a password entry by site."""
     passwords = load_passwords()
     passwords = [entry for entry in passwords if entry["site"] != site]
     save_passwords(passwords)
 
 def update_password(site, new_id, new_password):
+    """Update an existing password entry."""
     passwords = load_passwords()
     for entry in passwords:
         if entry["site"] == site:

@@ -21,7 +21,7 @@ def authenticate():
             entered = password_entry.get()
         if is_password_correct(entered):
             auth_window.destroy()
-            launch_ui()  # Lancement de l'interface principale
+            launch_ui()  # Launch the main UI
         else:
             result_label.configure(text="Mot de passe incorrect", text_color="red")
     
@@ -34,15 +34,15 @@ def authenticate():
 
 def launch_ui():
     ctk.set_appearance_mode("System")  # Modes: "System" (auto), "Dark", "Light"
-    ctk.set_default_color_theme("blue")  # Autres thèmes : "green", "dark-blue"
+    ctk.set_default_color_theme("blue")  # Themes: "blue" (default), "dark-blue", "green"
 
     root = ctk.CTk()
     root.title("KeyMate")
     
-    # Positionnement de la fenêtre
+    # Window setup
     root.geometry(setup_window(root))
 
-    # Entrées
+    # Entries and Labels
     site_entry = ctk.CTkEntry(root, placeholder_text="Site")
     site_entry.pack(pady=10)
 
@@ -86,15 +86,15 @@ def launch_ui():
 def setup_window(root: ctk) -> str:
     window_width, window_height = 250, 300
 
-    # Dimensions de l'écran
+    # Screen dimensions
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
     
-    # Hauteur de la barre des tâches (approximatif)
+    # Taskbar height assumption
     taskbar_height = 80
     
-    x = -8  # Collé à gauche
-    y = screen_height - window_height - taskbar_height  # Collé en bas en comptant la barre
+    x = -8
+    y = screen_height - window_height - taskbar_height
     return f"{window_width}x{window_height}+{x}+{y}"
 
 def on_show_all():

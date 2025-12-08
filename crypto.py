@@ -2,7 +2,7 @@ from cryptography.fernet import Fernet
 from config import ENCRYPTION_KEY, MASTER_PASSWORD
 import hashlib
 
-# Crée un Fernet pour le chiffrement/déchiffrement
+# Initialize Fernet with the encryption key
 fernet = Fernet(ENCRYPTION_KEY)
 
 def encrypt(data: bytes) -> bytes:
