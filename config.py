@@ -6,7 +6,7 @@ USB_KEY_PATH = Path("E:") / "KeyMate"
 def read_file_on_usb_key(filename: str):
     """Reads a file from the USB key."""
     if not USB_KEY_PATH.exists():
-        raise FileNotFoundError(f"Clé USB non détectée")
+        raise FileNotFoundError(f"Please insert the USB key")
     
     with open(USB_KEY_PATH / filename, "rb") as file:
         return file.read()
